@@ -19,6 +19,7 @@
 
 1. npx prisma migrate dev --name init
 2. npx prisma generate
+3. npx prisma migrate dev
 
 -   Cấu hình prisma đơn giản
 
@@ -54,7 +55,16 @@ datasource db {
 // DateTime
 // Json
 // Bytes
+// ?: tùy chọn
 
+
+// các định nghĩa
+// @id: khóa chính
+// @default: mặc định
+// autoincrement(): tự động tăng
+// uuid(): Sử dụng uuid
+// @relation(fields: [userId], references:[id]): mối quan hệ nhiều chiều
+// enum
 
 model User {
     id Int @id @default(autoincrement())
@@ -73,6 +83,70 @@ model Post {
     updatedAt DateTime
     author User @relation(feilds: [userId], references:[id])
     userId Int
+}
+
+```
+
+-   Quan hệ nhiều chiều
+
+```prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String          @id @default(uuid())
+  name           String
+  age            Int
+  email          String          @unique
+  isAdmin        Boolean
+  role           Role            @default(BASIC)
+  preferences    Json?
+  writtenPosts   Post[]          @relation("WrittenPosts")
+  favoritePosts  Post[]          @relation("FavoritePosts")
+  userPreference UserPreference?
+
+  @@unique([age, name])
+  @@index([email])
+}
+
+model UserPreference {
+  id           String  @id @default(uuid())
+  emailUpdates Boolean
+  user         User    @relation(fields: [userId], references: [id])
+  userId       String  @unique
+}
+
+model Post {
+  id            String     @id @default(uuid())
+  title         String
+  averageRating Float
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  author        User       @relation("WrittenPosts", fields: [authorId], references: [id])
+  authorId      String
+  favoriteBy    User?      @relation("FavoritePosts", fields: [favoriteById], references: [id])
+  favoriteById  String?
+  categories    Category[]
+  // @@id([title, authorId])
+}
+
+model Category {
+  id    String @id @default(uuid())
+  name  String @unique
+  posts Post[]
+}
+
+enum Role {
+  BASIC
+  ADMIN
+  EDITOR
 }
 
 ```
