@@ -41,7 +41,7 @@ model Post {
   updatedAt     DateTime   @updatedAt
   author        User       @relation("WrittenPosts", fields: [authorId], references: [id])
   authorId      String
-  favoriteBy    User?      @relation("FavoritePosts", fields: [favoriteById], references: [id])
+  favoriteBy    User?      @relation("FavoritePosts", fields: [favoriteById], references: [id], onDelete: Cascade)
   favoriteById  String?
   categories    Category[]
   // @@id([title, authorId])
