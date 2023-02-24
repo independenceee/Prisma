@@ -1,3 +1,8 @@
+# Start databases
+
+1. sudo service postgresql start
+2. sudo service postgresql stop
+
 # setup
 
 1. npm install --save-dev prisma typescript ts-node @types/node nodemon dotenv
@@ -20,6 +25,7 @@
 1. npx prisma migrate dev --name init
 2. npx prisma generate
 3. npx prisma migrate dev
+4. npx prisma studio
 
 -   Cấu hình prisma đơn giản
 
@@ -153,117 +159,13 @@ enum Role {
 
 ### Thao tác với prisma-clients
 
-1. create:
-
--   Tạo 1 user => await prisma.user.create({ data:{...}})
--   Tạo nhiều user => await prisma.user.createMany({data: [{...}, {...}]})
-
-2. delete:
-
--   Xóa nhiều user => await prisma.user.deleteMany()
-
-3. find:
-
--   Tìm dữ liệu duy nhất => await prisma.user.findUnique({
-    where: {
-    age_name: {
-    age: 27,
-    name: "Khánh"
-    }
-    }
-    })
--   Tìm dữ liệu đầu tiên => await prisma.user.findFirst({
-    where: {
-    name: "Khánh"
-    }
-    })
--   Tìm nhiều dữ liệu => await prisma.user.findMany({
-    where: {
-    name: "Nguyễn Khánh,
-    }
-    })
--   distinct:["name", "age"];
--   take: 2 => trả lại giá trị là hai với find
--   skip: 1 => bỏ qua người dùng đầu tiên lấy người dùng thứ hai trở đi với find
--   orderBy: {age: "asc",} || orderBy: {age: "desc"} => sắp xếp theo thứ tự tăng dần và giảm dần
-
-4. update:
-
-
 ```ts
 import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
-
-async function main() {
-    const user = await prisma.user.create({
-        data: {
-            name: "Nguyễn Khánh",
-            email: "nguyenkhanh17112003@gmail.com",
-            isAdmin: true,
-        },
-    });
-
-    console.log(user);
-}
-
-main()
-    .catch((error) => {
-        console.error(error.message);
-    })
-    .finally(async () => {
-        await prisma.$disconnect();
-    });
-```
-
--   Tìm tất cả user
-
-```ts
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+const Prisma = new PrismaClient();
 
 async function main() {
-    const user = await prisma.user.findMany();
-
-    console.log(user);
+    await prisma.user.create({
+        data: {},
+    });
 }
-
-main()
-    .catch((error) => {
-        console.error(error.message);
-    })
-    .finally(async () => {
-        await prisma.$disconnect();
-    });
-```
-
--   tạo và xóa nhiều user
-
-```ts
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
-
-async function main() {
-    await prisma.user.deleteMany();
-    const user = await prisma.user.create({
-        data: {
-            name: "Nguyễn Khánh",
-            email: "nguyenkhanh17112003@gmail.com",
-            age: 18,
-            isAdmin: true,
-        },
-    });
-
-    console.log(user);
-}
-
-main()
-    .catch((error) => {
-        console.error(error.message);
-    })
-    .finally(async () => {
-        await prisma.$disconnect();
-    });
 ```
