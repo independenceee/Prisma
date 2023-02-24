@@ -13,14 +13,14 @@
 # env
 
 1. postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=SCHEMA
-   USER: Tên người dùng cơ sở dữ liệu của bạn
-   PASSWORD: Mật khẩu cho người dùng cơ sở dữ liệu của bạn
-   HOST: Tên máy chủ lưu trữ của bạn (đối với môi trường cục bộ, nó là localhost)
-   PORT: Cổng nơi máy chủ cơ sở dữ liệu của bạn đang chạy (thường 5432dành cho PostgreSQL)
-   DATABASE: Tên cơ sở dữ liệu
-   SCHEMA: Tên của lược đồ bên trong cơ sở dữ liệu
+    - USER: Tên người dùng cơ sở dữ liệu của bạn
+    - PASSWORD: Mật khẩu cho người dùng cơ sở dữ liệu của bạn
+    - HOST: Tên máy chủ lưu trữ của bạn (đối với môi trường cục bộ, nó là localhost)
+    - PORT: Cổng nơi máy chủ cơ sở dữ liệu của bạn đang chạy (thường 5432dành cho PostgreSQL)
+    - DATABASE: Tên cơ sở dữ liệu
+    - SCHEMA: Tên của lược đồ bên trong cơ sở dữ liệu
 
-# Prisma
+# Prisma databases
 
 1. npx prisma migrate dev --name init
 2. npx prisma generate
@@ -28,17 +28,6 @@
 4. npx prisma studio
 
 -   Cấu hình prisma đơn giản
-
-```prisma
-generator client {
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-```
 
 ```prisma
 
